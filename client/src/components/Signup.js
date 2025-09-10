@@ -1,28 +1,72 @@
-import { useState } from "react";
-import axios from "axios";
+import React, { useState } from "react";
 
-export default function Signup() {
+function Signup() {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [message, setMessage] = useState("");
 
-  const handleSignup = async () => {
+  const handleSignup = async (e) => {
+    e.preventDefault();
     try {
-      await axios.post("http://localhost:5000/api/auth/signup", { name, email, password });
-      alert("User created! You can now login.");
+      const res = await fetch("http://localhost:5000/api/auth/signup", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ name, email, password }),
+      });
+
+      const data = await res.json();
+      if (res.ok) {
+        setMessage("✅ " + data.msg);
+      } else {
+        setMessage("❌ " + data.msg);
+      }
     } catch (err) {
-      alert(err.response.data.msg);
+      setMessage("❌ Server error");
     }
   };
 
   return (
-    <div className="flex flex-col w-80 mx-auto mt-20 gap-4">
-      <h2 className="text-xl font-bold">Signup</h2>
-      <input className="border p-2 rounded" placeholder="Name" value={name} onChange={e => setName(e.target.value)} />
-      <input className="border p-2 rounded" placeholder="Email" value={email} onChange={e => setEmail(e.target.value)} />
-      <input className="border p-2 rounded" type="password" placeholder="Password" value={password} onChange={e => setPassword(e.target.value)} />
-      <button className="bg-green-500 text-white p-2 rounded" onClick={handleSignup}>Signup</button>
-    </div>
-  );
+    <form onSubmit={handleSignup} className="flex flex-col gap-4">
+      <input
+        type="text"
+        placeholder="Full Name"
+        value={name}
+        onChange={(e) => setName(e.target.value)}
+        className="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-purple-500"
+      />
+      <input
+        type="email"
+        placeholder="Email"
+        value={email}
+        onChange={(e) => setEmail(e.target.value)}
+        className="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-purple-500"
+      />
+      <input
+        type="password"
+        placeholder="Password"
+        value={password}
+        onChange={(e) => setPassword(e.target.value)}
+        className="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-purple-500"
+      />
+      <button
+        type="submit"
+        className="w-full bg-purple-600 text-white py-2 rounded-lg hover:bg-purple-700 transition"
+      >
+        Sign Up
+      </button>
 
+      {message && (
+        <p
+          className={`text-center font-medium ${
+            message.startsWith("✅") ? "text-green-600" : "text-red-600"
+          }`}
+        >
+          {message}
+        </p>
+      )}
+    </form>
+  );
 }
+
+export default Signup;

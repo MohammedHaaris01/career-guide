@@ -1,27 +1,59 @@
-import { useState } from "react";
-import axios from "axios";
+import React, { useState } from "react";
 
-export default function Login({ setToken }) {
+function Login({ setToken }) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [message, setMessage] = useState("");
 
-  const handleLogin = async () => {
+  const handleLogin = async (e) => {
+    e.preventDefault();
     try {
-      const res = await axios.post("http://localhost:5000/api/auth/login", { email, password });
-      setToken(res.data.token);
-      alert(`Welcome ${res.data.name}`);
+      const res = await fetch("http://localhost:5000/api/auth/login", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email, password }),
+      });
+
+      const data = await res.json();
+      if (res.ok) {
+        setToken(data.token);
+        setMessage(""); // clear error on success
+      } else {
+        setMessage("❌ " + data.msg);
+      }
     } catch (err) {
-      alert(err.response.data.msg);
+      setMessage("❌ Server error");
     }
   };
 
   return (
-    <div className="flex flex-col w-80 mx-auto mt-20 gap-4">
-      <h2 className="text-xl font-bold">Login</h2>
-      <input className="border p-2 rounded" placeholder="Email" value={email} onChange={e => setEmail(e.target.value)} />
-      <input className="border p-2 rounded" type="password" placeholder="Password" value={password} onChange={e => setPassword(e.target.value)} />
-      <button className="bg-blue-500 text-white p-2 rounded" onClick={handleLogin}>Login</button>
-    </div>
-  );
+    <form onSubmit={handleLogin} className="flex flex-col gap-4">
+      <input
+        type="email"
+        placeholder="Email"
+        value={email}
+        onChange={(e) => setEmail(e.target.value)}
+        className="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+      />
+      <input
+        type="password"
+        placeholder="Password"
+        value={password}
+        onChange={(e) => setPassword(e.target.value)}
+        className="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+      />
+      <button
+        type="submit"
+        className="w-full bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700 transition"
+      >
+        Login
+      </button>
 
+      {message && (
+        <p className="text-center text-red-600 font-medium">{message}</p>
+      )}
+    </form>
+  );
 }
+
+export default Login;
