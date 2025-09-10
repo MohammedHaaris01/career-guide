@@ -1,3 +1,6 @@
+<img width="1897" height="937" alt="image" src="https://github.com/user-attachments/assets/8344b4cf-c189-4b83-bcd2-6bfdc7b91f82" />
+<img width="1915" height="957" alt="image" src="https://github.com/user-attachments/assets/0e19b2c1-8de6-4036-abba-6f2ab11497a2" />
+
 # 🎓 Career Guide – MERN Stack Project
 
 An interactive **Career & Education Advisor** web application built with the **MERN stack**.  
@@ -64,3 +67,4 @@ Based on the career mapping:contentReference[oaicite:3]{index=3}:
 🔗 GitHub: [MohammedHaaris01](https://github.com/MohammedHaaris01)
 
 ---
+
