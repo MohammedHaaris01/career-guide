@@ -1,3 +1,4 @@
+// src/components/Login.js
 import React, { useState } from "react";
 
 function Login({ setToken }) {
@@ -16,10 +17,12 @@ function Login({ setToken }) {
 
       const data = await res.json();
       if (res.ok) {
+        // data.token expected
         setToken(data.token);
-        setMessage(""); // clear error on success
+        localStorage.setItem("token", data.token);
+        setMessage("");
       } else {
-        setMessage("❌ " + data.msg);
+        setMessage("❌ " + (data.msg || "Login failed"));
       }
     } catch (err) {
       setMessage("❌ Server error");
@@ -48,7 +51,6 @@ function Login({ setToken }) {
       >
         Login
       </button>
-
       {message && (
         <p className="text-center text-red-600 font-medium">{message}</p>
       )}
