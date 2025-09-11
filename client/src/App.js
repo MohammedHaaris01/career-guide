@@ -1,3 +1,4 @@
+// src/App.js
 import React, { useState } from "react";
 import Login from "./components/Login";
 import Signup from "./components/Signup";
@@ -54,7 +55,8 @@ function App() {
       <h1 className="text-2xl font-bold text-green-700 mb-6">
         Welcome to Career Guide
       </h1>
-      <StudentGuideBot />
+      {/* Pass token to StudentGuideBot so it can save responses */}
+      <StudentGuideBot token={token} />
     </div>
   );
 }
