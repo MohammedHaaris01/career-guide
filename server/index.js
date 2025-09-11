@@ -13,7 +13,7 @@ mongoose.connect(process.env.MONGO_URI)
   .catch(err => console.log(err));
 
 app.use('/api/auth', require('./routes/auth'));
-app.use('/api/questionnaire', require('./routes/questionnaire')); // <--- new route
+app.use('/api/questionnaire', require('./routes/questionnaire'));  
 
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
